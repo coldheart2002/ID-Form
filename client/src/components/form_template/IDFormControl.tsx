@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 type propTypes = {
   id: string;
   md: string;
-  type: "text" | "email" | "number";
+  type: "text" | "email" | "number" | "date";
   placeholder: string;
   value: string | number | undefined;
   label: string;
@@ -12,7 +12,7 @@ type propTypes = {
   setter: (event: string | number) => void;
 };
 
-export const IDFormGroup = ({
+export const IDFormControl = ({
   id,
   md,
   type,

@@ -32,6 +32,15 @@ mongoose_1.default
 app.get("/", (req, res) => {
     res.json({ message: "root" });
 });
+app.get("/forms", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = yield Form_1.Form.find();
+        res.json({ message: "fetched successfully", data });
+    }
+    catch (error) {
+        res.json(error);
+    }
+}));
 app.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { idNumber } = req.body;
