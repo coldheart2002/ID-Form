@@ -34,7 +34,11 @@ app.get("/", (req, res) => {
 });
 app.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const { idNumber } = req.body;
+        const result = yield Form_1.Form.findOne({ idNumber });
         const form = new Form_1.Form(req.body);
+        if (result)
+            return res.json({ message: "id number already exist" });
         yield form.save();
         res.json({ message: "data saved successfully", data: req.body });
     }

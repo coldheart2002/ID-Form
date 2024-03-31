@@ -1,22 +1,41 @@
-import { useState } from "react";
-import React from "react";
+import { useState, FormEvent } from "react";
 import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { IDFormGroup } from "./IDFormGroup";
+import axios from "axios";
+
+type formProps = {
+  fName: string | number | undefined;
+  mName: string | number | undefined;
+  lName: string | number | undefined;
+  idNumber: string | number | undefined;
+};
 
 function IDForm() {
   const [validated, setValidated] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitForm = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
+    if (!form.checkValidity()) {
       event.stopPropagation();
+      console.log("Form is invalid. Submission prevented.");
+    } else {
+      console.log("Form is valid. Submitting...");
+      const form = { fName, mName, lName, idNumber };
+      handleSaveForm(form);
     }
-
     setValidated(true);
+  };
+  const handleSaveForm = async (form: formProps) => {
+    try {
+      const endpoint = "http://192.168.6.5:4000/create";
+      const result = await axios.post(endpoint, form);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const [fName, setFName] = useState<string | number>();
@@ -28,7 +47,7 @@ function IDForm() {
     <Form
       noValidate
       validated={validated}
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmitForm}
       className="container-fluid border border-primary m-2 p-3 rounded"
     >
       <Row className=" mb-3">
@@ -38,7 +57,7 @@ function IDForm() {
           type="text"
           label="First Name"
           invalidFeedback="Enter valid name"
-          placeholder="First name"
+          placeholder="Juan"
           value={fName}
           setter={setFName}
         />
@@ -48,7 +67,7 @@ function IDForm() {
           type="text"
           label="Middle Name"
           invalidFeedback="Enter valid name"
-          placeholder="Middle name"
+          placeholder="Dela"
           value={mName}
           setter={setMName}
         />
@@ -58,7 +77,7 @@ function IDForm() {
           type="text"
           label="Last Name"
           invalidFeedback="Enter valid name"
-          placeholder="Last name"
+          placeholder="Cruz"
           value={lName}
           setter={setLName}
         />
@@ -73,45 +92,15 @@ function IDForm() {
           setter={setIdNumber}
         />
       </Row>
-      <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId="validationCustom03">
-          <Form.Label>City</Form.Label>
-          <Form.Control type="text" placeholder="City" required />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid city.
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group as={Col} md="3" controlId="validationCustom04">
-          <Form.Label>State</Form.Label>
-          <Form.Control type="text" placeholder="State" required />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid state.
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group as={Col} md="3" controlId="validationCustom05">
-          <Form.Label>Zip</Form.Label>
-          <Form.Control type="text" placeholder="Zip" required />
-          <Form.Control.Feedback type="invalid">
-            Please provide a valid zip.
-          </Form.Control.Feedback>
-        </Form.Group>
-      </Row>
       <Form.Group className="mb-3">
         <Form.Check
           required
-          label="Agree to terms and conditions"
+          label="All the data I have provided is accurate and correct."
           feedback="You must agree before submitting."
           feedbackType="invalid"
         />
       </Form.Group>
-      <Button type="submit">Submit form</Button>
-      <Button
-        onClick={() => {
-          console.log(fName, mName, lName);
-        }}
-      >
-        log
-      </Button>
+      <Button type="submit">Create</Button>
     </Form>
   );
 }
