@@ -1,10 +1,17 @@
-import IDForm from "./components/IDForm";
+import { Header } from "./components/Header";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Login } from "./pages/Login";
+import { Home } from "./pages/Home";
 
 const App = () => {
   return (
-    <div className="container-fluid">
-      <IDForm />
-    </div>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </Router>
   );
 };
 

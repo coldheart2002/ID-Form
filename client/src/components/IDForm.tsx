@@ -13,7 +13,7 @@ type formProps = {
   idNumber: string | number | undefined;
 };
 
-function IDForm() {
+export const IDForm = () => {
   const [validated, setValidated] = useState(false);
   //personal info
   const [fName, setFName] = useState<string | number>();
@@ -31,6 +31,11 @@ function IDForm() {
   const [gmName, setGmName] = useState<string | number>();
   const [glName, setGlName] = useState<string | number>();
   const [gNumber, setGNumber] = useState<string | number>();
+
+  //other variables
+  const currentDate = new Date().toLocaleDateString();
+  console.log(currentDate);
+  console.log(birthDate);
 
   const handleSubmitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -77,12 +82,11 @@ function IDForm() {
       noValidate
       validated={validated}
       onSubmit={handleSubmitForm}
-      className="container-fluid border border-primary m-2 p-3 rounded"
+      className="container-fluid border border-primary p-3 rounded"
     >
       <Row className="text-center mb-4">
         <h2 className="text-center">ID Form</h2>
       </Row>
-
       <Row className="mb-3">
         <h4 className="text-center mb-3">Personal Information</h4>
         <IDFormControl
@@ -233,6 +237,4 @@ function IDForm() {
       <Button type="submit">Create</Button>
     </Form>
   );
-}
-
-export default IDForm;
+};
